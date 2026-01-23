@@ -1,7 +1,0 @@
-https://linuxhandbook.com/find-directory/
-https://linuxconfig.org/bash-script-error-handling-try-catch-in-bash
-https://linuxsimply.com/bash-scripting-tutorial/input-output/output/suppress-output/
-https://stackoverflow.com/questions/6212219/passing-parameters-to-a-bash-function
-https://stackoverflow.com/questions/8903239/how-can-i-calculate-time-elapsed-in-a-bash-script
-https://www.tecmint.com/write-custom-shell-functions-and-libraries-in-linux/
-https://itsfoss.com/display-linux-logo-in-ascii/
