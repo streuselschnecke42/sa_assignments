@@ -39,7 +39,7 @@ Below is a image of the execution of the initial version of it, that required su
 ![](./images/backup_script/create_backup.png)\
 Here is the recreation of the creation of the backup using the current (safer) version of the script.\
 ![](./images/backup_script/better_backup.png)\
-As visible, execution time has improved aswell. What has changed? I removed the `find` command that searches the entire root directory for the entered folder, preventing possible system crashes due to too intense searches. If the HOME directory is really big, it could lead to system crashes when using `find` like my old version of the backup script was using. Searching less, also needs less time, according to [[3]](#references). My HOME directory has almost nothing, so I got lucky when using the old script. The old backup script can be seen [here](./scripts/old_backup_scripts/second_backup.bash).
+As visible, execution time has improved aswell. What has changed? I removed the `find` command that searches the entire HOME directory for the entered folder, preventing possible system crashes due to too intense searches. If the HOME directory is really big, it could lead to system crashes when using `find` like my old version of the backup script was using. Searching less, also needs less time, according to [[3]](#references). My HOME directory has almost nothing, so I got lucky when using the old script. The old backup script can be seen [here](./scripts/old_backup_scripts/second_backup.bash).
 
 For the error handling aspect of the script, I have used Method 1 from [[2]](#references). Below is a snippet of the backup script, where the system will only return true if the input directory (`$1`) exists. Otherwise, it will print the custom error message and ends the program prematurely with exit value 1, which means fail.
 
@@ -90,17 +90,51 @@ The function also takes an argument. However, I have not done any error handling
 ### Questions
 #### **Question 1:** Would it be possible to enhance the naming of the backupfile so it relates to the directory being backed up? How would you then name the backupfile?
 
-Yes, it is possible to do that! I would most likely take argument `$1` and extract the basename of it to it inside the filename. `$1` stands for the input the user gives when using the command to execute the `backup.bash` script. So, `$1` is the name (or path included) of the directory. Some users might enter directories like `./folder` or `path/to/folder`, which would mess up the name if I would only use `$1` inside the name of the backup. Therefore I must use `DIR_NAME=$(basename "$1")`. So, instead of `backup_"$DATUM".tar.gz` it could be for e.g. `backup_"$DIR_NAME"_"$DATUM".tar.gz`.\
-Example: I enter `bash backup.bash Desktop/HamsterImages` and today's date is 2026-01-22. So, the corresponding backup file would be `backup_HamsterImages_2026-01-22.tar.gz`.
+Yes, it is possible to do that! I would most likely take argument `$1` and extract the basename of it to it inside the filename. `$1` stands for the input the user gives when using the command to execute the `backup.bash` script. So, `$1` is the name (or path included) of the directory. Some users might enter directories like `./folder` or `path/to/folder`, which would mess up the name if I would only use `$1` inside the name of the backup. Therefore I must use
+
+    DIR_NAME=$(basename "$1")
+    
+inside the script. So, instead of `backup_"$DATUM".tar.gz` it could be for e.g. `backup_"$DIR_NAME"_"$DATUM".tar.gz`.\
+Example: In the Home directory, I enter:
+
+    bash Desktop/sa_assignments/ass1/backup.bash Desktop/HamsterImages
+
+and today's date is 2026-01-22. So, the corresponding backup file would be `backup_HamsterImages_2026-01-22.tar.gz`.
 
 #### **Question 2:** Is it possible to add a timestamp to the backup so you could take several backups without overwriting the existing ones? How would then the filename look like?
 
-Of course, it is possible. You could combine that time with the date that I already use in my script. By changing the systax from `DATUM=$(date +%Y-%m-%d)` to `DATE=$(date -d "today" +"%Y%m%d%H%M%S")`. You could also change the variable for better logic into something like "TIMESTAMP".\
-Example: I enter `bash backup.bash Desktop`, today's date is 2026-01-22 and the time at that exact moment is 03:26:59 (Format HOURS:MINUTES:SECONDS). So, the corresponding backup file would be `backup_Desktop_20260122032659.tar.gz`.
+Of course, it is possible. I could combine that time with the date that I already use in my script. [[6]](#references) already explains this in full detail.\
+I can get that full timestamp by changing the systax from 
+
+    DATUM=$(date +%Y-%m-%d)
+    
+to
+
+    DATE=$(date -d "today" +"%Y%m%d%H%M%S")
+    
+You could also change the variable for better logic into something like "TIMESTAMP", or change the syntax to have "-" inbetween the numbers. A lot of customization is possible, but I would do it like mentioned above.\
+Example: I am currently in the Home directory and I enter:
+
+    bash Desktop/sa_assignments/ass1/backup.bash Desktop
+    
+Today's date is 2026-01-22 and the time at that exact moment is 03:26:59 (Format HOURS:MINUTES:SECONDS). So, the corresponding backup file would be `backup_Desktop_20260122032659.tar.gz`.
 
 ### Sourcecode
 [backup.bash](./scripts/backup.bash)
 
+### Important Note (Please read before moving further!)
+My filestructure, when creating and running the bachup.bash script was different than when I was doing the tasks below. My original file structure (at the point of creating and running backup.bash) was:
+
+    Desktop/
+        sa_assignment/
+            README.md
+            ass1/
+                images/
+                backup.bash
+                notes.txt
+                Report.md
+
+Therefore, the screenshots and mentioned execution syntax when running backup.bash, and when running the other scripts **below**, will **differ**. The new file structure is just like the repository.
 
 ## File Size Analyser Script
 // TODO
@@ -146,7 +180,11 @@ Example: I enter `bash backup.bash Desktop`, today's date is 2026-01-22 and the 
 ## ShellCheck
 I first used the web version of it.
 Sometimes it was really confusing. I had some odd encounters with this website. It told me for e.g. to add `""` around my variable, but when I did that, it told me to remove them. When I reverted it, it again told me to add the quotation marks. When clicked on "apply" inside the ShellCheck Output instead of fixing it manually and copy-pasting it back in the website, it didn't complain.\
-Since, those encounters on the website were quite strange, I decided to just install it locally using `sudo apt install shellcheck` and adding an extention for it to VS Code. I tried to recreate the same issues as mentioned in the last paragraph, and it was much more consistent.
+Since, those encounters on the website were quite strange, I decided to just install it locally running
+
+    sudo apt install shellcheck
+
+in the terminal and adding an extention for it to VS Code. I tried to recreate the same issues as mentioned in the last paragraph, and it was much more consistent with its' complaints.
 
 
 ## TIL _(Today I Learned...)_
@@ -178,9 +216,9 @@ Template REMOVE LATER[
 
 # Other useful links
 ## Linux-related
-https://itsfoss.com/display-linux-logo-in-ascii/
+https://itsfoss.com/display-linux-logo-in-ascii/ \
 https://stackoverflow.com/questions/6212219/passing-parameters-to-a-bash-function
 
 ## IEEE usage
-https://www.scribbr.com/ieee/ieee-paper-format/
+https://www.scribbr.com/ieee/ieee-paper-format/ \
 https://docs.google.com/document/d/1j1L96U2NagwWI9MEVDNVKt9pXxRzTH7h3krI3Mb6wZE/edit?tab=t.0
