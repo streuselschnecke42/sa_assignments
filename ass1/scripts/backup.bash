@@ -39,7 +39,8 @@ if [ -f "/tmp/backup_$DATUM.tar.gz" ]; then
 fi
 
 # CREATE BACKUP
-tar -czf backup_"$DATUM".tar.gz "$1" 2>/dev/null || { echo "backup_$DATUM.tar.gz creation failed :("; exit 1; }
+# C = CREATE; Z = GZIP; F = NEXT ARGUMENT WILL BE NEW NAME OF FILE
+tar -czf backup_"$DATUM".tar "$1" 2>/dev/null || { echo "backup_$DATUM.tar.gz creation failed :("; exit 1; }
 
 # MOVE FILE WHERE IT SHOULD BE (IN TMP DIR)
 cd || exit

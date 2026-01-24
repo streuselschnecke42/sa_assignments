@@ -148,6 +148,21 @@ Therefore, the screenshots and mentioned execution syntax when running backup.ba
 
 
 ## Text Analyser Script
+Task REMOVE LATER
+A file size analyser
+
+Do the following and document it in the lab report.
+- Write a script large_files.bash <path> 
+- takes a directory path as an argument 
+- scans it recursively to find all files and their size.
+- The script should check if the path exists, otherwise it should produce an error message and exit with an error code.
+
+- The script should write a report on the 5 largest files found (show the largest file first)
+- and the
+    + total size of these files should be printed
+    + together with details on the type of the file.
+- The script should also write out the total number of files scanned and
+- the total filesize for the target path.
 // TODO
 
 ### Questions

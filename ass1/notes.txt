@@ -1,0 +1,13 @@
+https://www.howtogeek.com/815778/bash-for-loops-examples/
+
+https://pendrivelinux.com/how-to-open-a-tar-file-in-unix-or-linux/
+
+https://www.geeksforgeeks.org/linux-unix/gzip-command-linux/
+
+https://unix.stackexchange.com/questions/16640/how-can-i-get-the-size-of-a-file-in-a-bash-script
+
+https://www.howtouselinux.com/post/sort-linux-ls-command-output-by-file-size
+
+https://www.geeksforgeeks.org/linux-unix/mapfile-command-in-linux-with-examples/
+
+https://www.geeksforgeeks.org/techtips/write-to-a-file-from-the-shell/
