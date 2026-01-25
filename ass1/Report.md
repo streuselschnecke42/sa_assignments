@@ -215,7 +215,7 @@ So, I can now get both sides of the output separately. I dont need the filepath,
     IFS=':' read -ra TDATA <<< "${TYPEDATA}"
     TYPE="${TDATA[1]}"
 
-to get the specific type data that will be needed for the task. For more explanation see [image](./images/file_analyser/AHAHAHAHAA.png) extracted from [[11]].
+to get the specific type data that will be needed for the task. For more explanation see [image](./images/file_analyser/AHAHAHAHAA.png) extracted from [[11]](#references).
 
 As visible in the for-loop snippet that I showed earlier, the script also increases the variable `COUNTER` each loop to count how many files the directory contains in total. The loop also contains another variable `TOTALSIZE`, which gets increased by the size of each file. This way, I get the total filesize of all files inside the target path.
 
@@ -307,7 +307,7 @@ in the terminal and adding an extention for it to VS Code. I tried to recreate t
 
 # References
 Template REMOVE LATER[
-    
+
     [#] A. A. Author, “Title of page,” Website Name. [Online]. Available: URL. [Accessed: Day-Month-Year].
 
     [#] Author (if any), “Title,” Website Name, Month Day, Year. [Online]. Available: URL [Accessed: Day-Month-Year].
