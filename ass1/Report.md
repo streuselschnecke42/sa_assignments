@@ -307,18 +307,18 @@ in the terminal and adding an extention for it to VS Code. I tried to recreate t
 
 # References
 Template REMOVE LATER[
+    
     [#] A. A. Author, “Title of page,” Website Name. [Online]. Available: URL. [Accessed: Day-Month-Year].
+
+    [#] Author (if any), “Title,” Website Name, Month Day, Year. [Online]. Available: URL [Accessed: Day-Month-Year].
 ]
-
-
-[#] Author (if any), “Title,” Website Name, Month Day, Year. [Online]. Available: URL [Accessed: Day-Month-Year].
 
 
 [1] Sagar Sharma, "Find a Directory in Linux", "Linux Handbook", Jul 22, 2023. [Online]. Available: https://linuxhandbook.com/find-directory/ [Accessed: 23-Jan-2026]
 
 [2] Lubos Rendek, "Try-Catch in Bash: Bash Script Error Handling", "LinuxConfig", Sep 21, 2025. [Online]. Available: https://linuxconfig.org/bash-script-error-handling-try-catch-in-bash [Accessed: 23-Jan-2026]
 
-[3] Unkown, "Mastering the Linux `find` Command for Directory Search", "LinuxVox.com", Nov 14, 2025. [Online]. Available: https://linuxvox.com/blog/linux-find-directory/ [Accessed: 23-Jan-2026]
+[3] Unkown, "Mastering the Linux \`find` Command for Directory Search", "LinuxVox.com", Nov 14, 2025. [Online]. Available: https://linuxvox.com/blog/linux-find-directory/ [Accessed: 23-Jan-2026]
 
 [4] Monira Akter Munny, "How to Suppress Output in Bash [3 Cases With Examples]", "LinuxSimply", May 4, 2024. [Online]. Available: https://linuxsimply.com/bash-scripting-tutorial/input-output/output/suppress-output/ [Accessed: 23-Jan-2026]
 
@@ -328,19 +328,25 @@ Template REMOVE LATER[
 
 [7] Aaron Kili, "How To Write and Use Custom Shell Functions and Libraries", "Tecmint", Feb 7, 2017. [Online]. Available: https://www.tecmint.com/write-custom-shell-functions-and-libraries-in-linux/ [Accessed: 23-Jan-2026]
 
-[8] https://www.geeksforgeeks.org/linux-unix/mapfile-command-in-linux-with-examples/
+[8] GeeksforGeeks, "mapfile Command in Linux With Examples", "GeeksforGeeks", Sep 5, 2024. [Online]. Available: https://www.geeksforgeeks.org/linux-unix/mapfile-command-in-linux-with-examples/ [Accessed: 25-Jan-2026]
 
-[9] https://www.howtogeek.com/815778/bash-for-loops-examples/
+[9] Dave McKay, "9 Examples of for Loops in Linux Bash Scripts", "How-To-Geek", Oct 30, 2023. [Online]. Available: https://www.howtogeek.com/815778/bash-for-loops-examples/
 
-[10] https://unix.stackexchange.com/questions/16640/how-can-i-get-the-size-of-a-file-in-a-bash-script
+[10] Unkown, "How can I get the size of a file in a bash script?", "Unix&Linux Stack Exchange", Jul 13, 2011, modified Jan 18, 2024. [Online]. Available: https://unix.stackexchange.com/questions/16640/how-can-i-get-the-size-of-a-file-in-a-bash-script [Accessed: 25-Jan-2026]
 
-[11] https://linuxsimply.com/bash-scripting-tutorial/string/split-string/
+[11] Auhona Islam, "8 Methods to Split String in Bash [With Examples]", "LinuxSimply", Apr 28, 2024. [Online]. Available: https://linuxsimply.com/bash-scripting-tutorial/string/split-string/ [Accessed: 25-Jan-2026]
 
-[12] https://www.geeksforgeeks.org/linux-unix/how-to-find-out-file-types-in-linux/
+[12] GeeksforGeeks, "How to Find Out File Types in Linux", "GeeksforGeeks", Sep 27, 2024. [Online]. Available: https://www.geeksforgeeks.org/linux-unix/how-to-find-out-file-types-in-linux/ [Accessed: 25-Jan-2026]
 
-[13] https://stackoverflow.com/questions/18586948/sorting-and-filtering-in-bash
+[13] Unkown, "Sorting and filtering in Bash", "Stack Overflow", Sep 3, 2013. [Online]. Available: https://stackoverflow.com/questions/18586948/sorting-and-filtering-in-bash [Accessed: 25-Jan-2026]
 
-[14] https://www.geeksforgeeks.org/techtips/write-to-a-file-from-the-shell/
+[14] GeeksforGeeks, "Write to a File From the Shell", "GeeksforGeeks", Jul 23, 2025. [Online]. Available: https://www.geeksforgeeks.org/techtips/write-to-a-file-from-the-shell/ [Accessed: 25-Jan-2026]
+
+[x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
+
+[x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
+
+[x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
 
 # Other useful links
 ## Linux-related
