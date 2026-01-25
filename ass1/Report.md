@@ -147,23 +147,122 @@ Therefore, the screenshots and mentioned execution syntax when running backup.ba
 [large_files.bash](./scripts/large_files.bash)
 
 
-## Text Analyser Script
-Task REMOVE LATER
-A file size analyser
+## File Size Analyser Script
+In this task, I had to write a bash script named [large_files.bash](./scripts/large_files.bash). It takes a directory path as an argument.
+I also made sure it cannot take more or less arguments by implementing some error handling like this:
 
-Do the following and document it in the lab report.
-- Write a script large_files.bash <path> 
-- takes a directory path as an argument 
-- scans it recursively to find all files and their size.
-- The script should check if the path exists, otherwise it should produce an error message and exit with an error code.
+    if [ "$#" -ne 1 ]; then
+        echo "Invalid amount of arguments. Only 1 argument needed (DIR)"
+        exit 1
+    fi
 
-- The script should write a report on the 5 largest files found (show the largest file first)
-- and the
-    + total size of these files should be printed
-    + together with details on the type of the file.
-- The script should also write out the total number of files scanned and
-- the total filesize for the target path.
-// TODO
+This snippet makes sure that the user does not enter more or less than 1 argument. Otherwise it will print a custom error message in the terminal and exit the script prematurely. `exit 1` means failure.\
+I also made sure that the entered argument from the user is actually an existing directory and not a file or something non-existent. This is how I implemented it:
+
+    if [ ! -d "$1" ]; then
+        echo "Directory not found."
+        exit 1
+    fi
+
+This will check the input argument `$1`. If it is not a directory or it doesn't exist, the program again, will exit prematurely with `exit 1` and print a custom error message in the terminal.\
+I have implemented the error handling the same way as in the first task. [[2]](#references) was a quite useful ressource to read for this topic.
+
+After the error handling for the input argument, the script will search the directory recursively for all files. I also made sure to store all those file paths inside a variable for later use. In the last task, I have used the `find` command before but then decided to delete it. However, this found knowledge won't be wasted, as I have used it in this task. I have initially wrote this:
+
+    ALL_FILEPATHS=$(find "$1" -type f 2>/dev/null)
+
+However, this is absolutely wrong, and I had to find that out the hard way.\
+Later on I wrote this:
+
+    for FILE_PATH in $ALL_FILEPATHS
+
+which caused a lot of crashes combined with the other line above. It now splits everything when there were spaces, so the paths would be broken. `ALL_FILEPATHS` is also not an array, which caused errors when extracting the data inside the for-loop. So, I rewrote the line with the `find` command like this:
+
+    mapfile -t ALL_FILEPATHS < <( find "$1" -type f 2>/dev/null )
+
+Using `mapfile`[[8]](#references), I can correct the previous mistake. Now, `ALL_FILEPATHS` is an array, and it really maps all paths separately onto the array `ALL_FILEPATHS`. `find` scans the directory recursively for files only, since I wrote `-type f`. The extraction of each file's data happens later in the for-loop[[9]](#references).
+
+    for FILE_PATH in "${ALL_FILEPATHS[@]}"
+    do
+        FILENAME=$(basename "$FILE_PATH")
+        SIZE=$(stat -c%s "$FILE_PATH")
+        TYPEDATA=$(file "$FILE_PATH")
+        IFS=':' read -ra TDATA <<< "${TYPEDATA}"
+        TYPE="${TDATA[1]}"
+
+        ALL_FILES+=("$FILENAME:$SIZE:$TYPE")
+
+        (( COUNTER+=1 ))
+        (( TOTALSIZE+=SIZE ))
+    done
+
+Here, the script extracts all data like filename, size, and information on the type. This will all be stored onto the `ALL_FILES` array. I separate the data using ":". The size gets extracted like this[[10]](#references):
+
+    SIZE=$(stat -c%s "$FILE_PATH")
+
+and the typedata can be extracted by using a way to split the output in 2[[11]](#references), which I will explain later. Before, I need to explain how to get the typedata in the first place.\
+When someone writes `file <path/to/file>`[[12]](#references) inside the terminal, they get something like this:
+![](./images/file_analyser/file_command.png)\
+It prints the input argument, then a ":", and then the information on the type of the file. I only need the information on the right side of the ":". Therefore, I need a way to split the output at the ":". In python, you wouldd write:
+
+    longstring.split(":")
+
+which would split the string at the desired spot. In bash, this is a bit more complicated. According to [[11]](#references), the string can be split using:
+![](./images/file_analyser/IFS.png)\
+So, I can now get both sides of the output separately. I dont need the filepath, so I will only use the second part of the output. Extracting things from an array is still the same as in python (almost). So, I will write:
+
+    TYPEDATA=$(file "$FILE_PATH")
+    IFS=':' read -ra TDATA <<< "${TYPEDATA}"
+    TYPE="${TDATA[1]}"
+
+to get the specific type data that will be needed for the task. For more explanation see [image](./images/file_analyser/AHAHAHAHAA.png) extracted from [[11]].
+
+As visible in the for-loop snippet that I showed earlier, the script also increases the variable `COUNTER` each loop to count how many files the directory contains in total. The loop also contains another variable `TOTALSIZE`, which gets increased by the size of each file. This way, I get the total filesize of all files inside the target path.
+
+When all is extracted and stored, the script sorts the `ALL_FILES` array, according to the file sizes, and stores it in `SORTED_FILES` like this:
+
+    mapfile -t SORTED_FILES < <( 
+        printf "%s\n" "${ALL_FILES[@]}" | 
+        sort -t: -k2,2nr
+    )
+
+The `-t` stores the results[[8]](#references). [[13]](#references) uses `sort` to sort something, and `-k<number>` to sort after a specific number (which argument in the array). I also use `%s\n` to strip the newline, and I only want to do numeric sort of the second argument(key) in reverse (from biggest to smallest value), and I need a field separator (according to shellcheck), so I use `sort -t: -k2,2nr`.
+
+The next task is to write the top 5 largest files onto a txt file. To do that I again use a for-loop but this time more primitively, by just writing 0 to 4 as the range, which was used in the examples from [[9]](#references). Why 0 to 4? Because indexes here work just like in python. 0 is the first element in the array, so I need to start from 0 and finish at 5-1 to get the top 5 elements in the array. I also use `IFS` again to split all my arguments in the `ALL_FILES` array. The report's name will be "largest_files.txt". As known from previous snippets, the format of the `ALL_FILES` array looks like this: `"$FILENAME:$SIZE:$TYPE"`.\
+To write onto a file I made sure to create the file beforehand by writing `touch` combined like this:
+
+    RESULTPATH="$1/largest_files.txt"
+    touch "$RESULTPATH"
+
+at the beginning of the script.\
+Now, the data will be extracted with `IFS` and written onto the existing `largest_files.txt` using the examples from [[14]](#references) like this:
+
+    for I in 0 1 2 3 4
+    do
+        IFS=':' read -ra DATA <<< "${SORTED_FILES[I]}"
+        {
+            echo "Filename: ${DATA[0]}";
+            echo "Filesize: ${DATA[1]} Bytes";
+            echo "Typedata:${DATA[2]}";
+            echo ""
+        } >> "$RESULTPATH"
+    done
+
+This will print the largest file first and the 5th-largest file last. Each file will be printed with its' name, size and typedata.\
+Afterwards, it will write the total number of files, that were found, and the total size of all found files in the target path like this:
+
+    {
+        echo "Total amount of files: $COUNTER";
+        echo "Total size: $TOTALSIZE Bytes"
+    } >> "$RESULTPATH"
+
+The task didn't specify where to save/create the file, so I decided to let it save in the place where the script was searching (the input argument path). This way, the report with the results get stored in the related path. It also makes it easier to create many reports in different places and have the data, where it it related. One could change it so it stores it all in one specific path. There are other possibilities.\
+In case a user executes the script again, using the same input argument, the file will just be extended. I have made sure that the script writes an entry date, each time it gets executed. This way, the user can scroll through the report seeing how the top 5 have changed or if they even changed in the first place, compared to the last time, the user executed the script.\
+Below is an example execution of the script:\
+![](./images/file_analyser/execution_ex.png)\
+As visible, the file has been stored not where it was executed but inside the directory where the analysis has been done. Just like it was mentioned previously.\
+This is how the result file will look like for ONE execution:\
+![](./images/file_analyser/result_report.png)
 
 ### Questions
 #### **Question 1:** Reflect on your final code, is it "good and clean" or do you see improvement areas?
@@ -229,10 +328,26 @@ Template REMOVE LATER[
 
 [7] Aaron Kili, "How To Write and Use Custom Shell Functions and Libraries", "Tecmint", Feb 7, 2017. [Online]. Available: https://www.tecmint.com/write-custom-shell-functions-and-libraries-in-linux/ [Accessed: 23-Jan-2026]
 
+[8] https://www.geeksforgeeks.org/linux-unix/mapfile-command-in-linux-with-examples/
+
+[9] https://www.howtogeek.com/815778/bash-for-loops-examples/
+
+[10] https://unix.stackexchange.com/questions/16640/how-can-i-get-the-size-of-a-file-in-a-bash-script
+
+[11] https://linuxsimply.com/bash-scripting-tutorial/string/split-string/
+
+[12] https://www.geeksforgeeks.org/linux-unix/how-to-find-out-file-types-in-linux/
+
+[13] https://stackoverflow.com/questions/18586948/sorting-and-filtering-in-bash
+
+[14] https://www.geeksforgeeks.org/techtips/write-to-a-file-from-the-shell/
+
 # Other useful links
 ## Linux-related
 https://itsfoss.com/display-linux-logo-in-ascii/ \
-https://stackoverflow.com/questions/6212219/passing-parameters-to-a-bash-function
+https://stackoverflow.com/questions/6212219/passing-parameters-to-a-bash-function \
+https://pendrivelinux.com/how-to-open-a-tar-file-in-unix-or-linux/ \
+https://www.geeksforgeeks.org/linux-unix/gzip-command-linux/
 
 ## IEEE usage
 https://www.scribbr.com/ieee/ieee-paper-format/ \

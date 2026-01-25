@@ -14,15 +14,18 @@ fi
 
 # GET ALL FILES; SUPPRESS CONSOLE ERRORS
 # SEARCH $1 FOR ALL OBJECTS OF TYPE FILE
-ALL_FILEPATHS=$(find "$1" -type f 2>/dev/null)
+mapfile -t ALL_FILEPATHS < <( find "$1" -type f 2>/dev/null )
+# ALL_FILEPATHS=$(find "$1" -type f 2>/dev/null)
 
 COUNTER=0
 TOTALSIZE=0
 SORTED_FILES=()
 ALL_FILES=()
-touch largest_files.txt
 
-for FILE_PATH in $ALL_FILEPATHS
+RESULTPATH="$1/largest_files.txt"
+touch "$RESULTPATH"
+
+for FILE_PATH in "${ALL_FILEPATHS[@]}"
 do
     FILENAME=$(basename "$FILE_PATH")
     SIZE=$(stat -c%s "$FILE_PATH")
@@ -41,22 +44,27 @@ mapfile -t SORTED_FILES < <(
     sort -t: -k2,2nr
 )
 
+{ 
+    echo "Top 5 largest files, found in $1 ";
+    echo "Entrydate: $(date +%Y-%m-%d)";
+    echo ""
+} >> "$RESULTPATH"
+
 for I in 0 1 2 3 4
 do
-    # https://linuxsimply.com/bash-scripting-tutorial/string/split-string/
-    # ALSO SEE: AHAHAHAHAA.png
     IFS=':' read -ra DATA <<< "${SORTED_FILES[I]}"
     {
         echo "Filename: ${DATA[0]}";
-        echo "Filesize: ${DATA[1]} KB";
+        echo "Filesize: ${DATA[1]} Bytes";
         echo "Typedata:${DATA[2]}";
         echo ""
-    } >> largest_files.txt
+    } >> "$RESULTPATH"
 done
 
 {
     echo "Total amount of files: $COUNTER";
-    echo "Total size: $TOTALSIZE KB"
-} >> largest_files.txt
+    echo "Total size: $TOTALSIZE Bytes";
+    echo ""
+} >> "$RESULTPATH"
 
-echo "Data of $1 stored in largest_files.txt"
+echo "Results were stored in $RESULTPATH"
