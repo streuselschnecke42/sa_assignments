@@ -136,16 +136,6 @@ My filestructure, when creating and running the bachup.bash script was different
 
 Therefore, the screenshots and mentioned execution syntax when running backup.bash, and when running the other scripts **below**, will **differ**. The new file structure is just like the repository.
 
-## File Size Analyser Script
-// TODO
-
-### Questions
-#### **Question 1:** Reflect on the final code and consider if this could be implemented as a one line command? Is one line commands good or bad?
-// TODO
-
-### Sourcecode
-[large_files.bash](./scripts/large_files.bash)
-
 
 ## File Size Analyser Script
 In this task, I had to write a bash script named [large_files.bash](./scripts/large_files.bash). It takes a directory path as an argument.
@@ -215,7 +205,7 @@ So, I can now get both sides of the output separately. I dont need the filepath,
     IFS=':' read -ra TDATA <<< "${TYPEDATA}"
     TYPE="${TDATA[1]}"
 
-to get the specific type data that will be needed for the task. For more explanation see [image](./images/file_analyser/AHAHAHAHAA.png) extracted from [[11]](#references).
+to get the specific type data that will be needed for the task. For more explanation see [image](./images/file_analyser/AHAHAHAHAA.png) extracted from [[11]](#reference).
 
 As visible in the for-loop snippet that I showed earlier, the script also increases the variable `COUNTER` each loop to count how many files the directory contains in total. The loop also contains another variable `TOTALSIZE`, which gets increased by the size of each file. This way, I get the total filesize of all files inside the target path.
 
@@ -265,6 +255,47 @@ This is how the result file will look like for ONE execution:\
 ![](./images/file_analyser/result_report.png)
 
 ### Questions
+#### **Question 1:** Reflect on the final code and consider if this could be implemented as a one line command? Are one line commands good or bad?
+My code as it is could not be changed to a one line command, in my opinhon. However, I know that my code is not the most efficient solution there is. There are many built-in GNU commands that I did not use in my soltion. This was, because I wanted to simplify my solution. I do not know a lot of bash. Therefore, it is a great approach to write simpler code instead of using built-in methods from the start. It teaches you how something works in greater detail.\
+Now, if my code would have been made better, it would be entirely possible to make it into a one line command. I have talked to another student and his solution uses many built-in GNU features, which makes his code much shorter and much more efficient, compared to mine. If I would have improved my code like this aswell, using improved and built-in GNU methods to solve this task and write the script, I would have been able to write a one line command. So, yes, it is possible.
+
+Are one line commands good? There are two different answers that depend on context.\
+For scripting? No! There they are horrible to read, unnecessarily long, and debugging would be a really painful and time consuming. Shellcheck would most likely mark it as bad aswell. It is not recommended and is not good coding practise either.\
+However, if you would use it for quick testing in the terminal using commands you don't plan on keeping, this would be absolutely fine. For example, something like this:\
+![](./images/file_analyser/IFS.png)\
+to demonstrate something or test something quickly, it is useful. I didn't plan to keep it this way. I used this one line command to test the functionality and demonstrate the command in my report. In my script, I split it up into smaller bits and made it more readable and more fit for my specific plans.
+
+### Sourcecode
+[large_files.bash](./scripts/large_files.bash)
+
+
+## Text Analyser Script
+Task: REMOVE LATER
+Do the following and document it in the lab report.
+Write a script analyse.bash <url> that takes an url as an argument and downloads the resource and analyses it.
+The script should work on binary files like images and on textfiles like web pages or source code.
+The analyse that is done, could differ depending on the type of the file.
+Write out a report on the downloaded file and show:
+
+The type and mime type of the file
+The size of the file
+For textfiles:
+
+The number of lines in the file
+The number of words in the file
+The number of spaces in the file
+Print the first line of the file and the last line of the file
+
+For binary files:
+The number of bytes in the file
+Show the 10-ish first and the 10-ish last bytes of the file in printable representation
+
+Open the local downloaded file in your favorite web browser
+
+//TODO
+
+
+### Questions
 #### **Question 1:** Reflect on your final code, is it "good and clean" or do you see improvement areas?
 // TODO
 
@@ -302,7 +333,8 @@ in the terminal and adding an extention for it to VS Code. I tried to recreate t
 
 
 ## TIL _(Today I Learned...)_
-// TODO
+// TODO\
+I hate IEEE referencing and would have had much more fun, exploring the different ways of writing linux commands and scripts without having to refernce and document everything that I use to look up things.
 
 
 # References

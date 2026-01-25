@@ -1,0 +1,12 @@
+   ------ FILEANALYSIS ------
+Entrydate: 2026-01-25
+URL: https://explainshell.com/
+
+Type:  HTML document, ASCII text, with very long lines (930)
+Mime Type: text/html
+Size: 6331 Bytes
+Lines: 80
+Words: 275
+Spaces: 1428
+First Line: <!DOCTYPE html>
+Last Line: </html>
