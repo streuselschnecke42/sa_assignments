@@ -73,6 +73,9 @@ else
 fi
 
 echo "Results were stored in fileanalysis.txt"
+cat fileanalysis.txt
+
+echo ""
 echo "Opening local file in firefox..."
 
 firefox "$F" || { echo "Failed to open.. Do you have firefox?"; exit 1; }

@@ -28,7 +28,7 @@ touch "$RESULTPATH"
 for FILE_PATH in "${ALL_FILEPATHS[@]}"
 do
     FILENAME=$(basename "$FILE_PATH")
-    SIZE=$(stat -c%s "$FILE_PATH")
+    SIZE=$(stat -c%s "$FILE_PATH" 2>/dev/null)
     TYPEDATA=$(file "$FILE_PATH")
     IFS=':' read -ra TDATA <<< "${TYPEDATA}"
     TYPE="${TDATA[1]}"
