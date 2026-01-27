@@ -188,7 +188,7 @@ Using `mapfile`[[8]](#references), I can correct the previous mistake. Now, `ALL
 ```
 Here, the script extracts all data like filename, size, and information on the type. This will all be stored onto the `ALL_FILES` array. I separate the data using ":". The size gets extracted like this[[10]](#references):
 ```bash
-    SIZE=$(stat -c%s "$FILE_PATH")
+    SIZE=$(stat -c%s "$FILE_PATH"  2>/dev/null)
 ```
 and the typedata can be extracted by using a way to split the output in 2[[11]](#references), which I will explain later. Before, I need to explain how to get the typedata in the first place.\
 When someone writes `file <path/to/file>`[[12]](#references) inside the terminal, they get something like this:\
@@ -256,7 +256,7 @@ This is how the result file will look like for ONE execution:\
 
 ### Questions
 #### **Question 1:** Reflect on the final code and consider if this could be implemented as a one line command? Are one line commands good or bad?
-My code as it is could not be changed to a one line command, in my opinhon. However, I know that my code is not the most efficient solution there is. There are many built-in GNU commands that I did not use in my soltion. This was, because I wanted to simplify my solution. I do not know a lot of bash. Therefore, it is a great approach to write simpler code instead of using built-in methods from the start. It teaches you how something works in greater detail.\
+My code as it is could not be changed to a one line command, in my opinion. However, I know that my code is not the most efficient solution there is. There are many built-in GNU commands that I did not use in my soltion. This was, because I wanted to simplify my solution. I do not know a lot about bash and GNU. Therefore, it is a great approach to write simpler code instead of using built-in methods from the start. It teaches you how something works in greater detail.\
 Now, if my code would have been made better, it would be entirely possible to make it into a one line command. I have talked to another student and his solution uses many built-in GNU features, which makes his code much shorter and much more efficient, compared to mine. If I would have improved my code like this aswell, using improved and built-in GNU methods to solve this task and write the script, I would have been able to write a one line command. So, yes, it is possible.
 
 Are one line commands good? There are two different answers that depend on context.\
@@ -270,30 +270,152 @@ to demonstrate something or test something quickly, it is useful. I didn't plan 
 
 
 ## Text Analyser Script
-Task: REMOVE LATER
-Do the following and document it in the lab report.
-Write a script analyse.bash <url> that takes an url as an argument and downloads the resource and analyses it.
-The script should work on binary files like images and on textfiles like web pages or source code.
-The analyse that is done, could differ depending on the type of the file.
-Write out a report on the downloaded file and show:
+This task was about writing a script [analyse.bash](./scripts/analyse.bash) that takes a url as an argument to analyse specific factors of. It should also download the file and lastly open it in the browser of choice.\
+The script can work with any binary files and text files. I made use of the mime type [[17]](#references) of the file to distinguish between the different files. This way, text and binary files are treated and analysed differently. I used if and else for that part:
+```bash
 
-The type and mime type of the file
-The size of the file
-For textfiles:
+    if [[ $MIMETYPE == text/* ]]; then
+        # analyse text file
 
-The number of lines in the file
-The number of words in the file
-The number of spaces in the file
-Print the first line of the file and the last line of the file
+    else 
+        # analyse image file
+    fi
 
-For binary files:
-The number of bytes in the file
-Show the 10-ish first and the 10-ish last bytes of the file in printable representation
+```
+So the first case is if the mime type of the file is something with text, and the second case is for binary files. So when I write `file -mime--type` \<filename> [[17]](#references), I get something like this:\
+![](./images/text_analyser/mime_type.png)\
+With the mime type extracted, the program can differentiate between the types and I only need to know the first part of the output, so I wrote `text/*` meaning the program ignores the second part.
 
-Open the local downloaded file in your favorite web browser
+The next part is to find out how to download different files. According to [[15]](#references) there is the command `curl` but also `wget`.\
+At first I tried using `wget` as it is in my [first attempt](./images/text_analyser/1st_attempt_download_image.png), which was quite interesting. I was able to download a file with just a link. However, it was not saved where I wanted it to be, but instead, where I executed the command. So, I tried to use other commands of wget to see what else it could do. My [second attempt](./images/text_analyser/2nd_attempt.png) was using `wget -P` to save it in a specific directory. You can also store it as a specific filename if you add the filename of your choice at the end. My [third attempt](./images/text_analyser/3rd_attempt_with_curl.png) was with `curl`. Using it combined with `-o` I could set a custom file name aswell. In my [fourth attempt](./images/text_analyser/4_curl_textwebsite.png) I used the previous command `curl -o` but combined it with `-s` to make the downloading output silent in the terminal. With that combination I was able to download and work with files quite well, so my initial command was:
+```bash
 
-//TODO
+    curl -s -o fil "$1" 
 
+```
+But `.exe` files (entering a download link for executable files) were a little different and have caused some errors. So, I have looked at other ressources and thought about changing the command by using `wget` instead [[16]](#references). So, my final command, was:
+```bash
+
+    wget -qO fil "$1" || { echo "Something went wrong"; exit 1; }
+
+```
+
+I have made the decision to store all the analysation results onto a txt file. Therefore I wrote
+```bash
+
+    touch fileanalysis.txt
+
+```
+at the beginning of the file, and used the aquired knowledge from previous tasks to write all the data onto the file like this: 
+```bash
+
+    {
+        echo "Lines: $LINES"
+        echo "Words: $WORDS"
+        echo "Spaces: $SPACES"
+        echo "First Line: $FIRSTLINE"
+        echo "Last Line: $LASTLINE"
+    } >> fileanalysis.txt
+
+```
+This snippet represents the results from the analysis of a text file. So, these are for file-specific analysis. The first part was:
+```bash
+
+    LINES=$(wc -l < "$F")
+    WORDS=$(wc -w < "$F")
+
+```
+which counts all lines of the file and then all words [[18]](#references), and stores it onto the variables `LINES` and `WORDS` respectively. The next line is:
+```bash
+
+    SPACES=$(grep -o ' ' "$F" | wc -l)
+
+```
+which counts all spaces of a file. I used the `grep` command and then used `-o ' '` which will count all the times that a space (' ') occurs [[19]](#references). The next 2 lines are:
+```bash
+
+    FIRSTLINE=$(head -1 "$F")
+    LASTLINE=$(tail -1 "$F")
+
+```
+which are to read the first (`head -1`) [[20]](#references) and the last (`tail -1`) [[21]](#references) line of a text file. After all this was analysed, it will be printed onto `filenalysis.txt` as mentioned one of the above snippets.\
+For the binary files, I also used the command `LINES=$(wc -c < "$F")` to get the lines. But these files also require some different analysis than the text files. So, the next thing is to get the first ten bits of the file. Next, would be the last ten bits of the file. Which I wrote like this[[18]](#references)[[22]](#references):
+```bash
+
+    FIRSTTEN=$(head -c 10 "$F" | xxd -p)
+    LASTTEN=$(tail -c 10 "$F" | xxd -p)
+
+```
+Notice that the end of each line uses `xxd -p`, which converts it to hex. This is so the first ten and last ten bits would be readable in the output. All results are written to `filenalysis.txt` like this:
+```bash
+
+    {
+        echo "Lines: $LINES"
+        echo "First 10: $FIRSTTEN"
+        echo "Last 10: $LASTTEN"
+        echo ""
+        echo ""
+    } >> fileanalysis.txt
+
+```
+However, there are some things that need to be analysed from both file types, which is the type, mime type, and size. These, I retrieve in the first part of the script, before the file-specific analysis. As known from the previous task, file types can be retrieved by using the `file` command [[12]](#references). The mime type can be retrieved using the commands mentioned in one of the above snippets, and the size can be retrieved using the command `stat -c%s <file>` [[10]]. So, all that is left to do is to retrieve the data:
+```bash
+
+    TYPE=$(file "$F" | cut -d: -f2-)
+    MIMETYPE=$(file --mime-type -b "$F")
+    SIZE=$(stat -c%s "$F" 2>/dev/null)
+
+```
+and to write it to `filenalysis.txt`:
+```bash
+
+    {
+    echo "   ------ FILEANALYSIS ------"
+    echo "Entrydate: $(date +%Y-%m-%d)";
+    echo "URL: $1"
+    echo ""
+    echo "Type: $TYPE"
+    echo "Mime Type: $MIMETYPE"
+    echo "Size: $SIZE Bytes"
+} >> fileanalysis.txt
+
+```
+Notice that I also mentioned the input url, a title, and an entry date. This is to make the file a little more visually appealing and readable. Nothing that was really required but still nice to look at for me personally.
+
+The script also stores the file in the correct file, making use of the retrieved mime type:
+```bash
+
+    TP=$(file --mime-type -b "$F" | cut -d/ -f2)
+    mv "$F" "$F.$TP"
+    F="$F.$TP"
+
+```
+It might be primitive to just change the file name after the download, but the file itself is still the same file. It is just nice to have it correctly stored for cases when for e.g. it is getting opened on a system that doesn't know how to read the file otherwise.
+
+When all is written into `filenalysis.txt` the script prints out a message that it has finsihed executing the previous tasks (whether that being correctly or incorrectly). It will then display that written file using:
+```bash
+
+    cat fileanalysis.txt
+
+```
+Afterwards, it will print another message indicating that it will now open the downloaded folder in firefox (webbrowser):
+```bash
+
+    echo "Opening local file in firefox..."
+    firefox "$F" || { echo "Failed to open.. Do you have firefox?"; exit 1; }
+
+```
+Notice that there is also an error message in case the opening in firefox fails, to tell the user that something went wrong. It doesn't have to be that the user doesnt have firefox but it **could**.
+
+The execution of the script using an imagelink will look something like this:\
+![](./images/text_analyser/exe_image.png)\
+The execution of the script using an 'average' link will look something like this:\
+![](./images/text_analyser/exe_text.png)\
+NOTE: It may look a little different in the terminal, when executing it now, since the image has been taken before `cat` was added to the script to print the containments of `fileanalysis.txt` into the terminal.\
+Here we see the downloaded file vs the original file:\
+![](./images/text_analyser/image_online_vs_local.png)
+![](./images/text_analyser/text_online_vs_local.png)\
+As visible, there is a very large difference between the downloaded html file and the actual website, because for e.g. the style tool (e.g. css) was not downloaded and displayed in combination with the html file. However, the downloaded image doesn't seem to have any different appearance compared to the original.
 
 ### Questions
 #### **Question 1:** Reflect on your final code, is it "good and clean" or do you see improvement areas?
@@ -374,6 +496,22 @@ Template REMOVE LATER[
 
 [14] GeeksforGeeks, "Write to a File From the Shell", "GeeksforGeeks", Jul 23, 2025. [Online]. Available: https://www.geeksforgeeks.org/techtips/write-to-a-file-from-the-shell/ [Accessed: 25-Jan-2026]
 
+[15] https://www.linuxbash.sh/post/using-wget-and-curl-to-download-files-from-the-internet
+
+[16] https://www.gnu.org/software/wget/manual/wget.html
+
+[17] https://itsfoss.gitlab.io/post/how-to-determine-mime-type-of-a-file-in-linux/
+
+[18] https://www.geeksforgeeks.org/linux-unix/wc-command-linux-examples/
+
+[19] https://stackoverflow.com/questions/18043260/how-to-count-all-spaces-in-a-file-in-unix
+
+[20] https://www.cyberciti.biz/faq/unix-linux-display-first-line-of-file/
+
+[21] https://linuxvox.com/blog/linux-get-last-n-lines-of-file/
+
+[22] https://stackoverflow.com/questions/4411014/how-to-get-only-the-first-ten-bytes-of-a-binary-file
+
 [x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
 
 [x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
@@ -385,7 +523,8 @@ Template REMOVE LATER[
 https://itsfoss.com/display-linux-logo-in-ascii/ \
 https://stackoverflow.com/questions/6212219/passing-parameters-to-a-bash-function \
 https://pendrivelinux.com/how-to-open-a-tar-file-in-unix-or-linux/ \
-https://www.geeksforgeeks.org/linux-unix/gzip-command-linux/
+https://www.geeksforgeeks.org/linux-unix/gzip-command-linux/ \
+https://www.baeldung.com/linux/bash-count-lines-in-file
 
 ## IEEE usage
 https://www.scribbr.com/ieee/ieee-paper-format/ \
