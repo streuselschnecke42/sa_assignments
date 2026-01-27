@@ -7,7 +7,10 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # https://www.linuxbash.sh/post/using-wget-and-curl-to-download-files-from-the-internet
-curl -s -o fil "$1" || { echo "Something went wrong"; exit 1; }
+# curl -s -o fil "$1" 
+
+#https://www.gnu.org/software/wget/manual/wget.html
+wget -qO fil "$1" || { echo "Something went wrong"; exit 1; }
 
 touch fileanalysis.txt
 
@@ -53,7 +56,7 @@ if [[ $MIMETYPE == text/* ]]; then
         echo "Last Line: $LASTLINE"
     } >> fileanalysis.txt
 
-elif [[ $MIMETYPE == image/* ]]; then
+else
     # https://www.geeksforgeeks.org/linux-unix/wc-command-linux-examples/
     LINES=$(wc -c < "$F")
     # https://stackoverflow.com/questions/4411014/how-to-get-only-the-first-ten-bytes-of-a-binary-file
@@ -67,10 +70,6 @@ elif [[ $MIMETYPE == image/* ]]; then
         echo ""
         echo ""
     } >> fileanalysis.txt
-
-else
-    echo "No valid MIME type could be detected"
-    exit 1
 fi
 
 echo "Results were stored in fileanalysis.txt"
