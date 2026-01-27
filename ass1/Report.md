@@ -3,7 +3,7 @@
 
 ## Customizing my environment
 ### Setup
-The operating system, that I used for this assignment is Linux Mint. The terminal I use is kitty and the shell is zsh.
+The operating system, that I used for this assignment is Linux Mint. The terminal I use is kitty and the shell is zsh.\
 ![](./images/customize/neofetch.png)
 ### Customization
 [oh-my-zsh](./images/customize/omz.png) does already a lot of customization.
@@ -25,15 +25,15 @@ Why is a link to a hamster useful? It's not particularly about the link. I do pe
 ## Backup Script
 It took quite some time and experimenting but the script [backup.bash](./scripts/backup.bash) should be error prune and create the backup in the correct file now.\
 The script will search for the directory that was entered inside the cwd (current working directory) and take the first one it finds. Since the task didn't specify. To search the system for a directory I used:
-
+```bash
     find "$HOME" -type d -name "$1" -print -quit 2>/dev/null
-
+```
 which was mentioned in [[1]](#references).
 
 To execute the script, you type:
-
+```bash
     bash path/to/backup.bash path/to/desired/directory
-
+```
 After the backup file has been created successfully, it prints the elapsed time, a confirmation that it was created and the name of the file.
 Below is a image of the execution of the initial version of it, that required sudo access. I have changed it in the final version, since (for some reason) now `mv` at first needed it and then didn't anymore..\
 ![](./images/backup_script/create_backup.png)\
@@ -42,39 +42,39 @@ Here is the recreation of the creation of the backup using the current (safer) v
 As visible, execution time has improved aswell. What has changed? I removed the `find` command that searches the entire HOME directory for the entered folder, preventing possible system crashes due to too intense searches. If the HOME directory is really big, it could lead to system crashes when using `find` like my old version of the backup script was using. Searching less, also needs less time, according to [[3]](#references). My HOME directory has almost nothing, so I got lucky when using the old script. The old backup script can be seen [here](./scripts/old_backup_scripts/second_backup.bash).
 
 For the error handling aspect of the script, I have used Method 1 from [[2]](#references). Below is a snippet of the backup script, where the system will only return true if the input directory (`$1`) exists. Otherwise, it will print the custom error message and ends the program prematurely with exit value 1, which means fail.
-
+```bash
     if [ ! -d "$1" ]; then
         echo "Directory not found."
         finish_time "$SECONDS"
         exit 1
     fi
-
+```
 I have done some error testing on the script to see what happens if there are too little or too much arguments, if the directory doesn't exist, and what happens if the backup already exists. All seem to work fine and print a custom error message together with the elapsed time. I was unsure if the elapsed time was needed for error cases aswell, but the task didn't argue against it so I left it in.\
 ![](./images/backup_script/misuse_backup_script.png)
 
 To also prevent bash output and making sure only my custom error messages appear (and NOTHING else). I have looked at [[4]](#references), which uses:
-
+```bash
     2>/dev/null
-
+```
 To show an actual usage of this inside my script, we can look at line 46 of [backup.bash](./scripts/backup.bash):
-
+```bash
     mv backup_"$DATUM".tar.gz /tmp 2>/dev/null
-
+```
 There, the backup file gets moved from the current working directory into `/tmp`. To explain `2>/dev/null`, according to [[4]](#references), `2>` is used when you want to redirect errors. Any error output will be redirected to the "null device", which is, as the name implies, basically sends everything into the void that it receives.\
 The script also needed the current date in its name. As visible in the above code snippets, im using the variable `$DATE` but never mentioned how it is created. According to [[6]](#references), you can add any date related information using the `date` command combined with other specific arguments to filter what information you want. I have used it like this:
-
+```bash
     DATUM=$(date +%Y-%m-%d)
-
+```
 This way, I get the format year-month-date in one argument and store it on `DATUM`.\
 To calculate the elapsed time, i have used a custom function. According to [[5]](#references), you calculate the time like this:
-
+```bash
     SECONDS=0
     # do some work
     duration=$SECONDS
     echo "$((duration / 60)) minutes and $((duration % 60)) seconds elapsed."
-
+```
 In my script, I have used a similar way. Only that I have split it up, and used a custom function, like [[7]](#references) explained, that I then can call from anywhere inside the script.
-
+```bash
     finish_time () {
         DURATION=$1
         MIN=$((DURATION / 60))
@@ -84,39 +84,39 @@ In my script, I have used a similar way. Only that I have split it up, and used 
 
     # START TIMER
     SECONDS=0
-
+```
 The function also takes an argument. However, I have not done any error handling for that specific function, since it will only be used inside the script. It must not be used outside the script!
 
 ### Questions
 #### **Question 1:** Would it be possible to enhance the naming of the backupfile so it relates to the directory being backed up? How would you then name the backupfile?
 
 Yes, it is possible to do that! I would most likely take argument `$1` and extract the basename of it to it inside the filename. `$1` stands for the input the user gives when using the command to execute the `backup.bash` script. So, `$1` is the name (or path included) of the directory. Some users might enter directories like `./folder` or `path/to/folder`, which would mess up the name if I would only use `$1` inside the name of the backup. Therefore I must use
-
+```bash
     DIR_NAME=$(basename "$1")
-    
+```
 inside the script. So, instead of `backup_"$DATUM".tar.gz` it could be for e.g. `backup_"$DIR_NAME"_"$DATUM".tar.gz`.\
 Example: In the Home directory, I enter:
-
+```bash
     bash Desktop/sa_assignments/ass1/backup.bash Desktop/HamsterImages
-
+```
 and today's date is 2026-01-22. So, the corresponding backup file would be `backup_HamsterImages_2026-01-22.tar.gz`.
 
 #### **Question 2:** Is it possible to add a timestamp to the backup so you could take several backups without overwriting the existing ones? How would then the filename look like?
 
 Of course, it is possible. I could combine that time with the date that I already use in my script. [[6]](#references) already explains this in full detail.\
 I can get that full timestamp by changing the systax from 
-
+```bash
     DATUM=$(date +%Y-%m-%d)
-    
+```
 to
-
+```bash
     DATE=$(date -d "today" +"%Y%m%d%H%M%S")
-    
+```
 You could also change the variable for better logic into something like "TIMESTAMP", or change the syntax to have "-" inbetween the numbers. A lot of customization is possible, but I would do it like mentioned above.\
 Example: I am currently in the Home directory and I enter:
-
+```bash
     bash Desktop/sa_assignments/ass1/backup.bash Desktop
-    
+```
 Today's date is 2026-01-22 and the time at that exact moment is 03:26:59 (Format HOURS:MINUTES:SECONDS). So, the corresponding backup file would be `backup_Desktop_20260122032659.tar.gz`.
 
 ### Sourcecode
@@ -140,38 +140,38 @@ Therefore, the screenshots and mentioned execution syntax when running backup.ba
 ## File Size Analyser Script
 In this task, I had to write a bash script named [large_files.bash](./scripts/large_files.bash). It takes a directory path as an argument.
 I also made sure it cannot take more or less arguments by implementing some error handling like this:
-
+```bash
     if [ "$#" -ne 1 ]; then
         echo "Invalid amount of arguments. Only 1 argument needed (DIR)"
         exit 1
     fi
-
+```
 This snippet makes sure that the user does not enter more or less than 1 argument. Otherwise it will print a custom error message in the terminal and exit the script prematurely. `exit 1` means failure.\
 I also made sure that the entered argument from the user is actually an existing directory and not a file or something non-existent. This is how I implemented it:
-
+```bash
     if [ ! -d "$1" ]; then
         echo "Directory not found."
         exit 1
     fi
-
+```
 This will check the input argument `$1`. If it is not a directory or it doesn't exist, the program again, will exit prematurely with `exit 1` and print a custom error message in the terminal.\
 I have implemented the error handling the same way as in the first task. [[2]](#references) was a quite useful ressource to read for this topic.
 
 After the error handling for the input argument, the script will search the directory recursively for all files. I also made sure to store all those file paths inside a variable for later use. In the last task, I have used the `find` command before but then decided to delete it. However, this found knowledge won't be wasted, as I have used it in this task. I have initially wrote this:
-
+```bash
     ALL_FILEPATHS=$(find "$1" -type f 2>/dev/null)
-
+```
 However, this is absolutely wrong, and I had to find that out the hard way.\
 Later on I wrote this:
-
+```bash
     for FILE_PATH in $ALL_FILEPATHS
-
+```
 which caused a lot of crashes combined with the other line above. It now splits everything when there were spaces, so the paths would be broken. `ALL_FILEPATHS` is also not an array, which caused errors when extracting the data inside the for-loop. So, I rewrote the line with the `find` command like this:
-
+```bash
     mapfile -t ALL_FILEPATHS < <( find "$1" -type f 2>/dev/null )
-
+```
 Using `mapfile`[[8]](#references), I can correct the previous mistake. Now, `ALL_FILEPATHS` is an array, and it really maps all paths separately onto the array `ALL_FILEPATHS`. `find` scans the directory recursively for files only, since I wrote `-type f`. The extraction of each file's data happens later in the for-loop[[9]](#references).
-
+```bash
     for FILE_PATH in "${ALL_FILEPATHS[@]}"
     do
         FILENAME=$(basename "$FILE_PATH")
@@ -185,48 +185,48 @@ Using `mapfile`[[8]](#references), I can correct the previous mistake. Now, `ALL
         (( COUNTER+=1 ))
         (( TOTALSIZE+=SIZE ))
     done
-
+```
 Here, the script extracts all data like filename, size, and information on the type. This will all be stored onto the `ALL_FILES` array. I separate the data using ":". The size gets extracted like this[[10]](#references):
-
+```bash
     SIZE=$(stat -c%s "$FILE_PATH")
-
+```
 and the typedata can be extracted by using a way to split the output in 2[[11]](#references), which I will explain later. Before, I need to explain how to get the typedata in the first place.\
-When someone writes `file <path/to/file>`[[12]](#references) inside the terminal, they get something like this:
+When someone writes `file <path/to/file>`[[12]](#references) inside the terminal, they get something like this:\
 ![](./images/file_analyser/file_command.png)\
 It prints the input argument, then a ":", and then the information on the type of the file. I only need the information on the right side of the ":". Therefore, I need a way to split the output at the ":". In python, you wouldd write:
-
-    longstring.split(":")
-
-which would split the string at the desired spot. In bash, this is a bit more complicated. According to [[11]](#references), the string can be split using:
+```python
+    somestring.split(":")
+```
+which would split the string at the desired spot. In bash, this is a bit more complicated. According to [[11]](#references), the string can be split using:\
 ![](./images/file_analyser/IFS.png)\
 So, I can now get both sides of the output separately. I dont need the filepath, so I will only use the second part of the output. Extracting things from an array is still the same as in python (almost). So, I will write:
-
+```bash
     TYPEDATA=$(file "$FILE_PATH")
     IFS=':' read -ra TDATA <<< "${TYPEDATA}"
     TYPE="${TDATA[1]}"
-
+```
 to get the specific type data that will be needed for the task. For more explanation see [image](./images/file_analyser/AHAHAHAHAA.png) extracted from [[11]](#reference).
 
 As visible in the for-loop snippet that I showed earlier, the script also increases the variable `COUNTER` each loop to count how many files the directory contains in total. The loop also contains another variable `TOTALSIZE`, which gets increased by the size of each file. This way, I get the total filesize of all files inside the target path.
 
 When all is extracted and stored, the script sorts the `ALL_FILES` array, according to the file sizes, and stores it in `SORTED_FILES` like this:
-
+```bash
     mapfile -t SORTED_FILES < <( 
         printf "%s\n" "${ALL_FILES[@]}" | 
         sort -t: -k2,2nr
     )
-
+```
 The `-t` stores the results[[8]](#references). [[13]](#references) uses `sort` to sort something, and `-k<number>` to sort after a specific number (which argument in the array). I also use `%s\n` to strip the newline, and I only want to do numeric sort of the second argument(key) in reverse (from biggest to smallest value), and I need a field separator (according to shellcheck), so I use `sort -t: -k2,2nr`.
 
 The next task is to write the top 5 largest files onto a txt file. To do that I again use a for-loop but this time more primitively, by just writing 0 to 4 as the range, which was used in the examples from [[9]](#references). Why 0 to 4? Because indexes here work just like in python. 0 is the first element in the array, so I need to start from 0 and finish at 5-1 to get the top 5 elements in the array. I also use `IFS` again to split all my arguments in the `ALL_FILES` array. The report's name will be "largest_files.txt". As known from previous snippets, the format of the `ALL_FILES` array looks like this: `"$FILENAME:$SIZE:$TYPE"`.\
 To write onto a file I made sure to create the file beforehand by writing `touch` combined like this:
-
+```bash
     RESULTPATH="$1/largest_files.txt"
     touch "$RESULTPATH"
-
+```
 at the beginning of the script.\
 Now, the data will be extracted with `IFS` and written onto the existing `largest_files.txt` using the examples from [[14]](#references) like this:
-
+```bash
     for I in 0 1 2 3 4
     do
         IFS=':' read -ra DATA <<< "${SORTED_FILES[I]}"
@@ -237,15 +237,15 @@ Now, the data will be extracted with `IFS` and written onto the existing `larges
             echo ""
         } >> "$RESULTPATH"
     done
-
+```
 This will print the largest file first and the 5th-largest file last. Each file will be printed with its' name, size and typedata.\
 Afterwards, it will write the total number of files, that were found, and the total size of all found files in the target path like this:
-
+```bash
     {
         echo "Total amount of files: $COUNTER";
         echo "Total size: $TOTALSIZE Bytes"
     } >> "$RESULTPATH"
-
+```
 The task didn't specify where to save/create the file, so I decided to let it save in the place where the script was searching (the input argument path). This way, the report with the results get stored in the related path. It also makes it easier to create many reports in different places and have the data, where it it related. One could change it so it stores it all in one specific path. There are other possibilities.\
 In case a user executes the script again, using the same input argument, the file will just be extended. I have made sure that the script writes an entry date, each time it gets executed. This way, the user can scroll through the report seeing how the top 5 have changed or if they even changed in the first place, compared to the last time, the user executed the script.\
 Below is an example execution of the script:\
