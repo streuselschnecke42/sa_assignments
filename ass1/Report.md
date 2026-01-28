@@ -419,7 +419,9 @@ As visible, there is a very large difference between the downloaded html file an
 
 ### Questions
 #### **Question 1:** Reflect on your final code, is it "good and clean" or do you see improvement areas?
-// TODO
+A code is never really perfect, in my opinion. There is always room to improve, even if shellcheck doesn't mark anything, it can still be improved. This time, I did use built-in GNU commands. However, I still also did more than what was asked in the task. The task wanted me to analyse the file. It didn't say to store it in a file. I did that to have the analysis ready in a neat way. This for example is not necessary.\
+I also could have just printed the results as they come using `echo` instead of storing them in variables. I chose it to make it more organized. However, this is also eating away precious ressources and performance time. The commands I used could also have still been improved even more. I personally think, I did a good job for a beginner level script, but it can always be improved. I tried to make it as clean as possible, including even some commenting, but there is room to improve, such as using functions to split the script further. This is however, more benifical for bigger scripts and not for smaller ones.\
+I think the renaming part to match the mimetype could have been done in a prettier way. I am not experienced enough to do it in a different way, but I am sure there must be a cleaner way. Maybe downloading it and storing it with the appropriate mimetype immediately or not renaming it to match the mime type at all. It was more of a personal preference to make it like this.
 
 #### **Question 2:** Do you see any security risks in downloading and analysing a file like this? Consider you are printing out details of the file into the terminal. Could this be used to attach your system? If there is a threat, can you protect your application?
 // TODO
