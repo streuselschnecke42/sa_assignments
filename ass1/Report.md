@@ -424,7 +424,16 @@ I also could have just printed the results as they come using `echo` instead of 
 I think the renaming part to match the mimetype could have been done in a prettier way. I am not experienced enough to do it in a different way, but I am sure there must be a cleaner way. Maybe downloading it and storing it with the appropriate mimetype immediately or not renaming it to match the mime type at all. It was more of a personal preference to make it like this.
 
 #### **Question 2:** Do you see any security risks in downloading and analysing a file like this? Consider you are printing out details of the file into the terminal. Could this be used to attach your system? If there is a threat, can you protect your application?
-// TODO
+There are risks, of course. These files could contain malicious things (e.g. taking advantage of tools like `less`), terminal escape sequences that can manipulate the terminal, or huge files for e.g. that could exhaust your ressources.\
+To explain more what escape sequences are, i'd like to use an example of malicous use. Some terminals crash when using the command `cat /random` because the file itself is 0, so strange things start to happen when using it in the wrong terminal. Terminal emulators like kitty, can handle these commands but for e.g. the normal linux mint terminal would crash and worse things could happen like your pc freezing aswell, without any way of stopping it. Usually, you would use `Ctrl + C` to stop it from executing but if your terminal and system freezes, you cannot stop it.\
+This was one of the more harmless examples. More can be red on [[23]](#references).
+A virtual environment might help with protecting your own files.
+
+Speaking from the UNIX perspective, some commands are also not executable without being sudo user. So as long as you dont use `sudo` you cannot do as much harm, theoretically. But there are exploits around this, if you look deep enough into the sourcecode, but not executing as sudo user is one way to minimize damage over the system, but doesnt shield you from user level damage.\
+Now, `.exe` files cannot be run on UNIX systems (doesn't mean it cannot cause harm). However, on Windows, these files might be a problem. While Microsoft tends to restrict users as much as possible and hide things from the average user, experienced users can and will find exploits and know how to get behind the "walls" of the Windows systems to have less restrictions. But since Windows is one of the more popular OS used on devices, hackers tend to attack these OS more, than small UNIX systems, since there is less profitability in attacking a smaller group. Zero-day-exploits are far more worth, the more damage they do, and the more users are affected by it. Most companies use Windows, so these are more of a target.\
+That doesn't mean that UNIX users are not under threats. However, this is a little off topic now.
+
+So to protect your application, you could for e.g. run scripts as unpriveleged (not sudo) user, disable escape sequences in the terminal and never execute a file blindly.
 
 ### Sourcecode
 [analyse.bash](./scripts/analyse.bash)
@@ -498,23 +507,23 @@ Template REMOVE LATER[
 
 [14] GeeksforGeeks, "Write to a File From the Shell", "GeeksforGeeks", Jul 23, 2025. [Online]. Available: https://www.geeksforgeeks.org/techtips/write-to-a-file-from-the-shell/ [Accessed: 25-Jan-2026]
 
-[15] https://www.linuxbash.sh/post/using-wget-and-curl-to-download-files-from-the-internet
+[15] Linux Bash, "Using \`wget\` and \`curl\` to Download Files from the Internet", "linuxbash", Jan, 2026. [Online]. Available: https://www.linuxbash.sh/post/using-wget-and-curl-to-download-files-from-the-internet [Accessed: 27-Jan-2026]
 
-[16] https://www.gnu.org/software/wget/manual/wget.html
+[16] Free Software Foundation, "Wget 1.25.0", "gnu.org", Nov 11, 2024. [Online]. Available: https://www.gnu.org/software/wget/manual/wget.html [Accessed: 27-Jan-2026]
 
-[17] https://itsfoss.gitlab.io/post/how-to-determine-mime-type-of-a-file-in-linux/
+[17] "revWhiteShadow", "How to Determine MIME Type of a File in Linux", "iTS FOSS", Nov 8, 2025. [Online]. Available: https://itsfoss.gitlab.io/post/how-to-determine-mime-type-of-a-file-in-linux/ [Accessed: 27-Jan-2026]
 
-[18] https://www.geeksforgeeks.org/linux-unix/wc-command-linux-examples/
+[18] GeeksforGeeks, "wc command in Linux with examples", "GeeksforGeeks", Nov 3, 2025. [Online]. Available: https://www.geeksforgeeks.org/linux-unix/wc-command-linux-examples/ [Accessed: 27-Jan-2026]
 
-[19] https://stackoverflow.com/questions/18043260/how-to-count-all-spaces-in-a-file-in-unix
+[19] "hek2mgl", "How to count all spaces in a file in Unix", "stackoverflow", Aug 15, 2019. [Online]. Available: https://stackoverflow.com/questions/18043260/how-to-count-all-spaces-in-a-file-in-unix [Accessed: 27-Jan-2026]
 
-[20] https://www.cyberciti.biz/faq/unix-linux-display-first-line-of-file/
+[20] Vivek Gite, "Linux / Unix: Display First Line of a File", "cyberciti", Feb 27, 2022. [Online]. Available: https://www.cyberciti.biz/faq/unix-linux-display-first-line-of-file/ [Accessed: 27-Jan-2026]
 
-[21] https://linuxvox.com/blog/linux-get-last-n-lines-of-file/
+[21] LinuxVox, "Linux: Getting the Last N Lines of a File", "LinuxVox", Nov 14, 2025. [Online]. Available: https://linuxvox.com/blog/linux-get-last-n-lines-of-file/ [Accessed: 27-Jan-2026]
 
-[22] https://stackoverflow.com/questions/4411014/how-to-get-only-the-first-ten-bytes-of-a-binary-file
+[22] psmears, "How to get only the first ten bytes of a binary file", "stackoverflow", Dec 2, 2025. [Online]. Available: https://stackoverflow.com/questions/4411014/how-to-get-only-the-first-ten-bytes-of-a-binary-file [Accessed: 27-Jan-2026]
 
-[x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
+[23] Packetlabs, "How Attackers Weaponize ANSI Escape Sequences", "Packetlabs", May 26, 2025. [Online]. Available: https://www.packetlabs.net/posts/weaponizing-ansi-escape-sequences/ [Accessed 10-Feb-2026]
 
 [x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
 
