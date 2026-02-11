@@ -440,7 +440,34 @@ So to protect your application, you could for e.g. run scripts as unpriveleged (
 
 
 ## Extend Existing Example Script
-// TODO
+The task was to extend on the given script `cli.bash`. Assuming the functions `app-command1` and `app-command2` were meant for the 2 tasks for this script, I implemented the 2 tasks using these functions.
+
+First, I extended `app-command1`, so it would print out a daily quote. I implemented an array that contains 7 quotes, each for one day of the week. The command `declare -a` will be of help here [[23]](#references) to create a simple array that will store the quotes.\
+So the quotes were implemented like this:
+```bash
+    declare -a QUOTES=(
+        [1]="Ironie gegen Dumme einzusetzen, ist wie einen Panzer mit nem Stein zu bewerfen. Kann man machen, bringt aber nichts."
+        [2]="Ich habe so viel Schlechtes über Alkohol gelesen, dass ich mit dem Lesen aufgehört habe."
+        [3]="Es ist Mittwoch, meine Kerle."
+        [4]="Ich war beim IQ-Test. Zum Glück war er negativ."
+        [5]="Eine Palette dieser kleinen Biere hat 24 Flaschen. Und ein Tag 24 Stunden. Zufall"
+        [6]="Jeder Mensch hat seinen Glauben - ich glaube, ich trink noch einen."
+        [0]="Serviervorschlag für Tiefkühlkost: Auftauen."
+    )
+```
+Note that sunday is value 0 and 6 is saturday. The quotes (except for wednesday; 3) are from [[24]](#references).\
+The quotes can be called by using the name of the array `QUOTES` and a number that is in the array (1-7). No error handling was needed because the week only has 7 days and the command `$(date +%w)` only returns values in the restricted range. So, now the function `app-command1` will retrieve the day of the week and print out the quote that corresponds to that value by calling the array with the retrieved weekday value.\
+Therefore, the function `app-command1` now looks like this:
+```bash
+    function app-command1
+    {
+        WEEKDAY=$(($(date +%w)))
+        echo "${QUOTES[WEEKDAY]}"
+    }
+```
+
+Next, I extended the function `app-command2`, so it would... //TODO
+
 
 ### Questions
 #### **Question 1:** Reflect on the cli code and compare it to other programming languages you have learnt. Talk about the similarity/differences and what is good/bad.
@@ -525,7 +552,9 @@ Template REMOVE LATER[
 
 [23] Packetlabs, "How Attackers Weaponize ANSI Escape Sequences", "Packetlabs", May 26, 2025. [Online]. Available: https://www.packetlabs.net/posts/weaponizing-ansi-escape-sequences/ [Accessed 10-Feb-2026]
 
-[x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
+[23] GeeksforGeeks, "Bash Scripting - Array", "GeeksforGeeks", Apr 13, 2022. [Online]. Available: [url](https://www.geeksforgeeks.org/linux-unix/bash-scripting-array/) [Accessed 11-02-2026]
+
+[24] Noah Cammann, "Dumme Sprüche", "1001SPRÜCHE", Apr 11, 2023. [Online]. Available: [url](https://1001sprueche.com/dumme-sprueche) [Accessed 11-02-2026]
 
 [x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
 

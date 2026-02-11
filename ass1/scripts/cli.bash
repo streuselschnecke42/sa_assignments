@@ -18,6 +18,26 @@ VERSION="1.0.0"
 
 
 
+# LOCAL QUOTES
+declare -a QUOTES=(
+    # MONDAY
+    [1]="Ironie gegen Dumme einzusetzen, ist wie einen Panzer mit nem Stein zu bewerfen. Kann man machen, bringt aber nichts."
+    # TUESDAY
+    [2]="Ich habe so viel Schlechtes über Alkohol gelesen, dass ich mit dem Lesen aufgehört habe."
+    # WEDNESDAY
+    [3]="Es ist Mittwoch, meine Kerle."
+    # THURSDAY
+    [4]="Ich war beim IQ-Test. Zum Glück war er negativ."
+    # FRIDAY
+    [5]="Eine Palette dieser kleinen Biere hat 24 Flaschen. Und ein Tag 24 Stunden. Zufall"
+    # SATURDAY
+    [6]="Jeder Mensch hat seinen Glauben - ich glaube, ich trink noch einen."
+    # SUNDAY
+    [0]="Serviervorschlag für Tiefkühlkost: Auftauen."
+)
+
+
+
 #
 # Message to display for usage and help.
 #
@@ -78,9 +98,13 @@ function version
 # Function for taking care of specific command. Name the function as the
 # command is named.
 #
+# FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
+# DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
+# shellcheck disable=SC2329
 function app-command1
 {
-    echo "This is output from command1."
+    WEEKDAY=$(($(date +%w)))
+    echo "${QUOTES[WEEKDAY]}"
 }
 
 
@@ -89,6 +113,9 @@ function app-command1
 # Function for taking care of specific command. Name the function as the
 # command is named.
 #
+# FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
+# DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
+# shellcheck disable=SC2329
 function app-command2
 {
     echo "This is output from command2."
@@ -103,6 +130,9 @@ function app-command2
 # Function for taking care of specific command. Name the function as the
 # command is named.
 #
+# FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
+# DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
+# shellcheck disable=SC2329
 function app-calendar
 {
     local events="$1"
