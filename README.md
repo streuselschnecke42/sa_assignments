@@ -42,3 +42,7 @@ This repository is for assignments that were made for the System Administations 
   + [IEEE usage](./ass1/Report.md#ieee-usage)
 
 ### [Scripts folder](./ass1/scripts/)
+[backup.bash](./ass1/scripts/backup.bash)\
+[large_files.bash](./ass1/scripts/large_files.bash)\
+[analyse.bash](./ass1/scripts/analyse.bash)\
+[cli.bash](./ass1/scripts/cli.bash)
