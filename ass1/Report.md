@@ -500,16 +500,39 @@ I wasn't sure if this was part of the task but I changed it anyway, assuming it 
 
 ### Questions
 #### **Question 1:** Reflect on the cli code and compare it to other programming languages you have learnt. Talk about the similarity/differences and what is good/bad.
-// TODO
+Compared to other languages, CLI code is quite hard to get used to. While other programming languages, like python, have simple syntax, CLI code has some cryptic syntax (e.g. double ";" or "(( ))"). However, there are similarities to languages like python and java. CLI code still has familiar code like `while`, `case`, and `if`/`else`, but in CLI code they need additional syntax like `while .. do .. done` or `case .. in .. esax`, which is not easy to get used to.\
+Just like java, CLI code uses brackets for the conditions of if-statements, just a different type of brackets and some additional syntax.
+
+What's good about CLI code is that you can write automated scripts to do things in one go and more convenient. You basically have quick access to a large number of tools/ commands with just a few commands needed to use them. You also don't have to compile anything like in e.g. cmake or java.\
+The downsides are that you can destroy your system if you don't know what you are doing and for e.e.g operate as sudo user. However, developers knew that users can make mistakes and some UNIX systems implemented some command outputs that warn you before executing e.g. `rm -rf *`. There, the terminal will ask you if you for e.g. are sure that you want to proceed with your action.\
+The syntax is also not easy to get used to sometimes, especially with all the large documentation that might be a little overwhelming for beginners.\
+Personally, I think it's good for small tasks but can be really hard to maintain and debug for larger projects.
 
 ### Sourcecode
 [cli.bash](./scripts/cli.bash)
 
 
 ## How to learn Linux
-#### **Question:** Lets say you have a friend that wants to learn Unix and the shell. What would be your suggestion to your friend on the five most important steps to start learning?
-//TODO
-
+### **Question:** Lets say you have a friend that wants to learn Unix and the shell. What would be your suggestion to your friend on the five most important steps to start learning?
+#### 1. The right Guidance
+Do not watch these 12 hour tutorials or how others have their first experience. Most of these videos are really boring and you learn nothing and just end up getting frustrated because the people in the videos appear to be so much faster and display it much easier because they mostly cut out all the trial and error or have prior experience, they don't mention.\
+Instead, focus on actual experience that you make yourself. Talk to real people that have knowledge and don't make everything sound so complicated. Talking to actual people and letting them explain things in simpler terms is much more useful than trying to understand all these guides that contain mostly academic and complex terminology or even assume you have prior knowledge. There are guides that are simple but they are hard to find. Therefore, I suggest finding the right group of people to help is always good.\
+BUT it is also important that you find your own style of solving things at some point. It is okay when you let others help you get going and understand the foundamentals, but at some point you need to learn to do things on your own AND in your own way.
+#### 2. Motivation/ Why?
+Nothing really sticks if you don't have a motivation to do so or if the reason is just "I saw it on social media and i want to appear cool.". That's not really a valid reason that will keep you motivated for long. Trends die fast and then you end up moving on aswell. The motivation needs to be a little more personal then that, so it keeps you hooked. Remind yourself of this reason or these reasons every time, you planned a study session.
+#### 3. Baby Steps and Burnout
+Don't do everything at once or you'll end up getting overwhelmed and burned out. It is also crusial to not compare yourself to others. Some might learn everything in a day while others take a week or even more, and that's okay. If you need more time and aren't under time pressure because of an exam related to this topic, you have all the time in the world to do it in your own pace. "Never half-ass two things, whole-ass one thing."-Ron Swanson [Parks and Recreation](https://www.youtube.com/watch?v=k6hZ9KdG1QU).\
+Set small goals that are so easy to do that it almost feels illegal. This way, you don't feel overwhelmed and don't try to procrastinate to avoid the task. If the task is simple and small to do, it may be a little easier to get started.\
+However, planning these tasks might be harder, as when you start out, you might not understand the level of difficulty of each task. That's why you need the right guidance (see step 1).
+#### 4. Don't use Windows
+Personally, I think it's so inconvenient to have to install extra tools etc. just to have a terminal that still doesn't give you full freedom. The best way to learn UNIX and understand shell scripting is to actually not use windows, but installing a linux distribution.\
+If you are unsure, you can always dual-boot windows and linux. It might seem overwhelming but it is actually not that scary or hard. My first dual-boot for e.g. was successful even without prior knowledge.\
+There are many distributions and finding the right one is not an easy task but you can always dual boot and have multiple systems. Just start out with one distro and stay on it until you feel ready and more adventorous.\
+For e.g. if you want to still do active gaming on your system, Cachy OS might be a good distro to choose. If you are completely new, are unsure of what to pick and want to start with something more familiar, Mint with Cinnamon is a good choice, as it looks similar to windows and still gives you the option to not use the terminal for everything, in case you are unsure of certain things.\
+I would suggest to visit [url](https://www.heise.de/ratgeber/Der-c-t-Linux-Netzplan-So-finden-Sie-die-passende-Distribution-6330180.html) to get a good overview of some of the distros and what they entail. The website even provides sort of a train map to better visualize what the different distros have and don't have.
+#### 5. Have fun
+You should of course try to stay committed and serious about this, but also understand that this is not work, not something you HAVE to do (life or death situation). Understand that this is your decision and you can explore in your own way and make the system your own personal environment. You aren't restricted by any means. UNIX lets you explore many things in your own way and lets you change things that other systems don't want you to change.\
+This is your chance to have more freedom to explore.
 
 ## ShellCheck
 I first used the web version of it.
@@ -520,21 +543,32 @@ Since, those encounters on the website were quite strange, I decided to just ins
 
 in the terminal and adding an extention for it to VS Code. I tried to recreate the same issues as mentioned in the last paragraph, and it was much more consistent with its' complaints.
 
+In the [last task](#extend-existing-example-script) I actually encountered a problem with shellcheck claiming that the provided functions from the template weren't invoked. Shellcheck technically understood that they might be used somewhere indirectly but still kept complaining. Therefore, I decided to ignore/ suppress this warning. This was the only warning I ignored because all functions were used, just that shellcheck doesn't always understand where or how and you can't just tell it that it is actually used.\
+I wanted to ignore the warnings but since the blue marks were distracting, I suppressed them like this:\
+![](./images/shellcheck/shellcheck_suppress.png)\
+I used these only in the functions of the script [cli.bash](./scripts/cli.bash). In case you want to remove them, they are in lines 105, 120, 137, 152, and 167 of [cli.bash](./scripts/cli.bash).\
+This was the only case I encountered, where I ignored the warning.
 
 ## TIL _(Today I Learned...)_
-// TODO\
-I hate IEEE referencing and would have had much more fun, exploring the different ways of writing linux commands and scripts without having to refernce and document everything that I use to look up things.
+Bash scripting is fun, if you don't have stress because of many deadlines (work, other courses etc.).\
+I also leanred a lot about my terminal that I customized but forgot how. Writing it down was nice, since I can now look at this report in case I forget again.\
+I learned a lot about bash scripting and the varieties and similarities to other languages and how to use the terminal more. The terminal has a lot of things to offer and I also lerned how to read guides a bit better. I also found this interesting tool (`tldr`), which is so much more convenient than `man`, when you don't have a lot of time to read everything.
 
+Getting started was quite time consuming, and the first scripts took quite some time and were a little bit hard. Learning the syntax differences and some new commands, was a little demanding. Especially realizing a mistake and then having to rework the report aswell, was quite tedious.\
+Writing the scripts and then the report was not an option for me, because I wanted to document my thoughts alongside writing the script or at least right after finishing a script, since it helps me understand, what I wrote, better, and organize my thoughts, or even finding mistakes in the code, when explaining it in the report.
+
+I am personally quite proud of the little extention I wrote in [cli.bash](./scripts/cli.bash) and how I implemented [large_files.bash](./scripts/large_files.bash).\
+While [large_files.bash](./scripts/large_files.bash) is not the most efficient code, it is something I made myself.\
+[cli.bash](./scripts/cli.bash) was so short and easy to solve, once I understood the given script and task. I personally think, that my solution is quite elegant.\
+Personally, all scripts are not bad. I am suprised that I even made it this far, considering that I don't have that much knowledge about bash scripting. But I also realized that I don't have no knowledge. Exchanging ideas with other students and then using the gained knowledge in the report has truly strengthen my understanding.\
+Although, I might never fully get used to the syntax, since there are so many commands, I still learned a lot. For example I now understand more, how `tldr` works, how to use`if`/`else`-statements, `for`-loops, creating files, printing things in the files or in the terminal and how to remove not needed printouts or in particular, what `>/dev/null` means.
+
+What I absolutely don't appreciate was IEEE referencing. Personally, writing the report, was quite enjoyable and will help me later when I need to come back to in someday, but I would have had much more fun, exploring the different ways of writing linux commands and scripts without having to refernce everything that I use to look up things. I always felt the need to justify where I found certain things. Referencing is okay, but I have a personal problem with this type of referencing.
+
+What I did appreciate, were the questions that required personal experiences and possible knowledge from those experiences. It was also nice to use more cognitive skills like critical thinking to understand and see things from different perspectives.\
+The assignment gave a lot of freedom when it came to the answering of the questions which was quite nice.
 
 # References
-Template REMOVE LATER[
-
-    [#] A. A. Author, “Title of page,” Website Name. [Online]. Available: URL. [Accessed: Day-Month-Year].
-
-    [#] Author (if any), “Title,” Website Name, Month Day, Year. [Online]. Available: URL [Accessed: Day-Month-Year].
-]
-
-
 [1] Sagar Sharma, "Find a Directory in Linux", "Linux Handbook", Jul 22, 2023. [Online]. Available: https://linuxhandbook.com/find-directory/ [Accessed: 23-Jan-2026]
 
 [2] Lubos Rendek, "Try-Catch in Bash: Bash Script Error Handling", "LinuxConfig", Sep 21, 2025. [Online]. Available: https://linuxconfig.org/bash-script-error-handling-try-catch-in-bash [Accessed: 23-Jan-2026]
@@ -581,15 +615,13 @@ Template REMOVE LATER[
 
 [23] Packetlabs, "How Attackers Weaponize ANSI Escape Sequences", "Packetlabs", May 26, 2025. [Online]. Available: https://www.packetlabs.net/posts/weaponizing-ansi-escape-sequences/ [Accessed 10-Feb-2026]
 
-[23] GeeksforGeeks, "Bash Scripting - Array", "GeeksforGeeks", Apr 13, 2022. [Online]. Available: [url](https://www.geeksforgeeks.org/linux-unix/bash-scripting-array/) [Accessed 11-02-2026]
+[23] GeeksforGeeks, "Bash Scripting - Array", "GeeksforGeeks", Apr 13, 2022. [Online]. Available: https://www.geeksforgeeks.org/linux-unix/bash-scripting-array/ [Accessed 11-02-2026]
 
-[24] Noah Cammann, "Dumme Sprüche", "1001SPRÜCHE", Apr 11, 2023. [Online]. Available: [url](https://1001sprueche.com/dumme-sprueche) [Accessed 11-02-2026]
+[24] Noah Cammann, "Dumme Sprüche", "1001SPRÜCHE", Apr 11, 2023. [Online]. Available: https://1001sprueche.com/dumme-sprueche [Accessed 11-02-2026]
 
-[25] Navendu Pottekkat, "An Interactive Guide to Transforming JSON with jq", "navendu.me", Nov 22, 2024. [Online]. Available: [url](https://navendu.me/posts/jq-interactive-guide/) [Accessed 11-02-2026]
+[25] Navendu Pottekkat, "An Interactive Guide to Transforming JSON with jq", "navendu.me", Nov 22, 2024. [Online]. Available: https://navendu.me/posts/jq-interactive-guide/ [Accessed 11-02-2026]
 
-[26] Subham Kumar Sinha, "Quotes API Documentation", "motivational-spark-api", 2025. [Online]. Available: [url](https://motivational-spark-api.vercel.app/api/) [Accessed 11-02-2026]
-
-[x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
+[26] Subham Kumar Sinha, "Quotes API Documentation", "motivational-spark-api", 2025. [Online]. Available: https://motivational-spark-api.vercel.app/api/ [Accessed 11-02-2026]
 
 # Other useful links
 ## Linux-related

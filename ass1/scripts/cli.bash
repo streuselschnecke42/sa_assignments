@@ -56,7 +56,7 @@ function usage
 ""
 "Options:"
 "  --help, -h     Print help."
-"  --version, -h  Print version."
+"  --version, -v  Print version."
     )
 
     printf "%s\\n" "${txt[@]}"
@@ -71,8 +71,8 @@ function badUsage
 {
     local message="$1"
     local txt=(
-"For an overview of the command, execute:"
-"$SCRIPT --help"
+        "For an overview of the command, execute:"
+        "$SCRIPT --help"
     )
 
     [[ -n $message ]] && printf "%s\\n" "$message"
@@ -88,7 +88,7 @@ function badUsage
 function version
 {
     local txt=(
-"$SCRIPT version $VERSION"
+        "$SCRIPT version $VERSION"
     )
 
     printf "%s\\n" "${txt[@]}"
