@@ -18,7 +18,7 @@ VERSION="1.0.0"
 
 
 
-# LOCAL QUOTES
+# LOCAL QUOTES FOR APP-COMMAND1
 declare -a QUOTES=(
     # MONDAY
     [1]="Ironie gegen Dumme einzusetzen, ist wie einen Panzer mit nem Stein zu bewerfen. Kann man machen, bringt aber nichts."
@@ -50,6 +50,8 @@ function usage
 "Command:"
 "  command1             Demo of command."
 "  command2 [anything]  Demo of command using arguments."
+"  lq                   get a locally stored quote"
+"  oq                   get an online retrieved quote"
 "  calendar [events]    Print out current calendar with(out) events."
 ""
 "Options:"
@@ -101,10 +103,10 @@ function version
 # FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
 # DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
 # shellcheck disable=SC2329
+#
 function app-command1
 {
-    WEEKDAY=$(($(date +%w)))
-    echo "${QUOTES[WEEKDAY]}"
+    echo "This is output from command1."
 }
 
 
@@ -116,6 +118,7 @@ function app-command1
 # FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
 # DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
 # shellcheck disable=SC2329
+#
 function app-command2
 {
     echo "This is output from command2."
@@ -127,12 +130,42 @@ function app-command2
 
 
 #
+# FUNCTION FOR GETTING A LOCAL DAILY QUOTE
+#
+# FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
+# DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
+# shellcheck disable=SC2329
+#
+function app-lq
+{
+    WEEKDAY=$(($(date +%w)))
+    echo "${QUOTES[WEEKDAY]}"
+}
+
+
+
+#
+# FUNCTION FOR GETTING AN ONLINE DAILY QUOTE
+#
+# FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
+# DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
+# shellcheck disable=SC2329
+#
+function app-oq
+{
+    curl 'https://motivational-spark-api.vercel.app/api/quotes/random' 2>/dev/null | jq '.["quote"]'
+}
+
+
+
+#
 # Function for taking care of specific command. Name the function as the
 # command is named.
 #
 # FUNCTION IS USED BUT SHELLCHECK DOESNT UNDERSTAND UNLESS USED 
 # DIRECTLY AND NOT DYNAMICALLY; IGNORING SHELLCHECK FOR THIS SECTION
 # shellcheck disable=SC2329
+#
 function app-calendar
 {
     local events="$1"
@@ -169,10 +202,12 @@ do
 
         command1         \
         | command2       \
-        | calendar)
+        | calendar       \
+        | lq             \
+        | oq)
             command=$1
             shift
-            app-"$command" "$*"
+            app-"$command" "$@"
             exit 0
         ;;
 

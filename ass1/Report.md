@@ -440,9 +440,9 @@ So to protect your application, you could for e.g. run scripts as unpriveleged (
 
 
 ## Extend Existing Example Script
-The task was to extend on the given script `cli.bash`. Assuming the functions `app-command1` and `app-command2` were meant for the 2 tasks for this script, I implemented the 2 tasks using these functions.
+The task was to extend on the given script `cli.bash`.
 
-First, I extended `app-command1`, so it would print out a daily quote. I implemented an array that contains 7 quotes, each for one day of the week. The command `declare -a` will be of help here [[23]](#references) to create a simple array that will store the quotes.\
+First, I created `app-lq`, so it would print out a daily quote. I implemented an array that contains 7 quotes, each for one day of the week. The command `declare -a` will be of help here [[23]](#references) to create a simple array that will store the quotes.\
 So the quotes were implemented like this:
 ```bash
     declare -a QUOTES=(
@@ -456,8 +456,8 @@ So the quotes were implemented like this:
     )
 ```
 Note that sunday is value 0 and 6 is saturday. The quotes (except for wednesday; 3) are from [[24]](#references).\
-The quotes can be called by using the name of the array `QUOTES` and a number that is in the array (1-7). No error handling was needed because the week only has 7 days and the command `$(date +%w)` only returns values in the restricted range. So, now the function `app-command1` will retrieve the day of the week and print out the quote that corresponds to that value by calling the array with the retrieved weekday value.\
-Therefore, the function `app-command1` now looks like this:
+The quotes can be called by using the name of the array `QUOTES` and a number that is in the array (1-7). No error handling was needed because the week only has 7 days and the command `$(date +%w)` only returns values in the restricted range. So, now the function `app-lq` will retrieve the day of the week and print out the quote that corresponds to that value by calling the array with the retrieved weekday value.\
+Therefore, the function `app-lq` now looks like this:
 ```bash
     function app-command1
     {
@@ -465,9 +465,38 @@ Therefore, the function `app-command1` now looks like this:
         echo "${QUOTES[WEEKDAY]}"
     }
 ```
+and execution of the newly created function, looks like this:\
+![](./images/extend_cli/lq.png)
 
-Next, I extended the function `app-command2`, so it would... //TODO
+Next, I created the function `app-oq`. Here, the task was to make it possible to print out a daily quote from an online ressource into the terminal in a readable manner. The given ressource page was https://quotes.rest/. However the task also stated that it would be possible to choose another service aswell.\
+The given website required authentication, so it would be quite inconvenient to use. A classmate has shown me another website that also provides quotes, and doesn't require login. The website [[26]](#references) is a quotes API and is much easier to integrate. Using [[26]](#references) and adding `quotes/random` at the end of the URL, will give us the link https://motivational-spark-api.vercel.app/api/quotes/random which is the link I used for this task as my source for online quotes. This site will display the author of the quote and the quote in a JSON format like this:\
+![](./images/extend_cli/json_format.png)\
+To extract the quote alone, I used `jq`. This tool has to get installed first. I installed `jq` using the command `sudo apt install jq`.\
+Of course, I could have red the jq user manual from https://jqlang.org/manual/ but the command [`tldr jq`](./images/extend_cli/tldr_jq.png) is giving me a nice summary of the most important usage ways. "tldr" stands for "too long didn't read" and can be installed onto the system using the terminal. It's like `man` but WAY MORE summarized.\
+I also used [[25]](#references), which is an interactive guide for `jq`. After [experimenting and testing](./images/extend_cli/interactive.png) using [[25]](#references), I came to the final result, which is:
+```bash
+    function app-command2
+    {
+        curl 'https://motivational-spark-api.vercel.app/api/quotes/random' 2>/dev/null | jq '.["quote"]'
+    }
+```
+Using `2>/dev/null`, I remove unnecessary output of `curl` and using `jq` like this, I only extract the `quote` from the site, which then gets printed.\
+![](./images/extend_cli/oq.png)\
+I also extended the [helptext](./images/extend_cli/help.png) accordingly.
 
+I noticed that `command2` doesn't work as intended (see image below).\
+![](./images/extend_cli/lies.png)\
+The number of arguments is always 1 because the code line
+```bash
+    app-"$command" "$*"
+```
+is merging all arguments into one string, making it impossible to count properly. Replacing `*` with `@` like this:
+```bash
+    app-"$command" "$@"
+```
+results in proper argument count.\
+![](./images/extend_cli/better.png)\
+I wasn't sure if this was part of the task but I changed it anyway, assuming it was not meant to behave that way.
 
 ### Questions
 #### **Question 1:** Reflect on the cli code and compare it to other programming languages you have learnt. Talk about the similarity/differences and what is good/bad.
@@ -555,6 +584,10 @@ Template REMOVE LATER[
 [23] GeeksforGeeks, "Bash Scripting - Array", "GeeksforGeeks", Apr 13, 2022. [Online]. Available: [url](https://www.geeksforgeeks.org/linux-unix/bash-scripting-array/) [Accessed 11-02-2026]
 
 [24] Noah Cammann, "Dumme Sprüche", "1001SPRÜCHE", Apr 11, 2023. [Online]. Available: [url](https://1001sprueche.com/dumme-sprueche) [Accessed 11-02-2026]
+
+[25] Navendu Pottekkat, "An Interactive Guide to Transforming JSON with jq", "navendu.me", Nov 22, 2024. [Online]. Available: [url](https://navendu.me/posts/jq-interactive-guide/) [Accessed 11-02-2026]
+
+[26] Subham Kumar Sinha, "Quotes API Documentation", "motivational-spark-api", 2025. [Online]. Available: [url](https://motivational-spark-api.vercel.app/api/) [Accessed 11-02-2026]
 
 [x] Author, "title", "websitename", date, year. [Online]. Available: url [Accessed dd-mm-yyyy]
 
