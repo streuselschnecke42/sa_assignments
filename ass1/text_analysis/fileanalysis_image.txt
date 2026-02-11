@@ -1,0 +1,12 @@
+   ------ FILEANALYSIS ------
+Entrydate: 2026-01-25
+URL: https://3.bp.blogspot.com/-ODktMBVe8B8/T-lvD5fkYjI/AAAAAAAAC-A/R3oFJ3zwUHQ/s1600/Hamster+image.jpg
+
+Type:  JPEG image data, JFIF standard 1.01, resolution (DPI), density 96x96, segment length 16, Exif Standard: [TIFF image data, little-endian, direntries=3, software=Google], baseline, precision 8, 1024x768, components 3
+Mime Type: image/jpeg
+Size: 80661 Bytes
+Lines: 80661
+First 10: ÿØÿàJFIF
+Last 10: Ekìlgí.ÿÙ
+
+

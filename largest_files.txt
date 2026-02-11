@@ -1,0 +1,26 @@
+Top 5 largest files, found in Desktop/sa_assignments 
+Entrydate: 2026-01-27
+
+Filename: image_online_vs_local.png
+Filesize: 1653751 Bytes
+Typedata: PNG image data, 1919 x 940, 8-bit/color RGB, non-interlaced
+
+Filename: cf14af69afe63e2572fa39667b65cb408f0c55
+Filesize: 1652326 Bytes
+Typedata: zlib compressed data
+
+Filename: exe_image.png
+Filesize: 1147388 Bytes
+Typedata: PNG image data, 1919 x 985, 8-bit/color RGB, non-interlaced
+
+Filename: 0abc84982b9ee850a92269602f14ab5e325d2e
+Filesize: 1142393 Bytes
+Typedata: zlib compressed data
+
+Filename: demonstrate_aliases.png
+Filesize: 361580 Bytes
+Typedata: PNG image data, 1451 x 480, 8-bit/color RGB, non-interlaced
+
+Total amount of files: 198
+Total size: 11458861 Bytes
+
