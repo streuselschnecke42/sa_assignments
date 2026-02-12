@@ -1,6 +1,43 @@
 # Lab Report for Assignment 1
 ### Michelle Weber
 
+## Table of Contents
+### 1. [Customizing my environment](./ass1/Report.md#customizing-my-environment)
+  + [Setup](./ass1/Report.md#setup)
+  + [Customization](./ass1/Report.md#customization)
+  + [Aliases](./ass1/Report.md#aliases)
+### 2. [Backup Script](./ass1/Report.md#backup-script)
+  + [Code Explanation](./ass1/Report.md#backup-script)
+  + [Questions](./ass1/Report.md#questions)
+    + [Question 1](./ass1/Report.md#question-1-would-it-be-possible-to-enhance-the-naming-of-the-backupfile-so-it-relates-to-the-directory-being-backed-up-how-would-you-then-name-the-backupfile)
+    + [Question 2](./ass1/Report.md#question-2-is-it-possible-to-add-a-timestamp-to-the-backup-so-you-could-take-several-backups-without-overwriting-the-existing-ones-how-would-then-the-filename-look-like)
+  + [Sourcecode](./ass1/Report.md#sourcecode)
+  + _[Important Note](./ass1/Report.md#important-note-please-read-before-moving-further)_
+### 3. [File Size Analyser Script](./ass1/Report.md#file-size-analyser-script)
+  + [Code Explanation](./ass1/Report.md#file-size-analyser-script)
+  + [Questions](./ass1/Report.md#questions-1)
+    + [Question 1](./ass1/Report.md#question-1-reflect-on-the-final-code-and-consider-if-this-could-be-implemented-as-a-one-line-command-are-one-line-commands-good-or-bad)
+  + [Sourcecode](./ass1/Report.md#sourcecode-1)
+### 4. [Text Analyser Script](./ass1/Report.md#text-analyser-script)
+  + [Code Explanation](./ass1/Report.md#text-analyser-script)
+  + [Questions](./ass1/Report.md#questions-2)
+    + [Question 1](./ass1/Report.md#question-1-reflect-on-your-final-code-is-it-good-and-clean-or-do-you-see-improvement-areas)
+    + [Question 2](./ass1/Report.md#question-2-do-you-see-any-security-risks-in-downloading-and-analysing-a-file-like-this-consider-you-are-printing-out-details-of-the-file-into-the-terminal-could-this-be-used-to-attach-your-system-if-there-is-a-threat-can-you-protect-your-application)
+  + [Sourcecode](./ass1/Report.md#sourcecode-2)
+### 5. [Extend Existing Example Script](./ass1/Report.md#extend-existing-example-script)
+  + [Code Explanation](./ass1/Report.md#extend-existing-example-script)
+  + [Questions](./ass1/Report.md#questions-3)
+    + [Question 1](./ass1/Report.md#question-1-reflect-on-the-cli-code-and-compare-it-to-other-programming-languages-you-have-learnt-talk-about-the-similaritydifferences-and-what-is-goodbad)
+  + [Sourcecode](./ass1/Report.md#sourcecode-3)
+### 6. [How to learn Linux](./ass1/Report.md#how-to-learn-linux)
+  + [Question](./ass1/Report.md#question-lets-say-you-have-a-friend-that-wants-to-learn-unix-and-the-shell-what-would-be-your-suggestion-to-your-friend-on-the-five-most-important-steps-to-start-learning)
+### 7. [Shellcheck](./ass1/Report.md#shellcheck)
+### 8. [TIL](./ass1/Report.md#til-today-i-learned)
+### 9. [References](./ass1/Report.md#references)
+### 10. [Other useful links](./ass1/Report.md#other-useful-links)
+  + [Linux-related](./ass1/Report.md#linux-related)
+  + [IEEE usage](./ass1/Report.md#ieee-usage)
+
 ## Customizing my environment
 ### Setup
 The operating system, that I used for this assignment is Linux Mint. The terminal I use is kitty and the shell is zsh.\
