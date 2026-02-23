@@ -1,5 +1,9 @@
 # Lab Report for Assignment 1
-### Michelle Weber
+
+### Name: Michelle Weber
+### Email: mw224hw@student.lnu.se
+![](./images/titleimageideas/boringversion.png)\
+[image source](https://sparksupport.com/blog/fun-with-bash-scripting/)
 
 ## Table of Contents
 1. [Customizing my environment](#customizing-my-environment)
