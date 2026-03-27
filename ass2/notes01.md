@@ -58,7 +58,7 @@ sudo systemctl status mariadb
 sudo systemctl enable mariadb
 sudo systemctl status mariadb
 # should i?
-sudo mysql_secure_installation
+# sudo mysql_secure_installation
 ```
 
 4. Install the Apache web server. Write in the report if you followed a guide, make it as a reference.
